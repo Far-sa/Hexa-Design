@@ -2,12 +2,14 @@ package main
 
 import (
 	"fmt"
-	"hexa-design/internal/domain/services"
+	handler "hexa-design/internal/adapters/inbound/rest"
 	repository "hexa-design/internal/adapters/outbound/databse"
+	"hexa-design/internal/domain/services"
 	"log"
 	"os"
 
 	"github.com/go-redis/redis/v8"
+	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -23,13 +25,13 @@ func main() {
 	//productService := services.NewProductServiceRedis(productRepo, redisClient)
 	productRepo := repository.NewProductRepositoryDb(db)
 	productService := services.NewProductService(productRepo)
+	productHandler := handler.NewProductHandler(productService)
 
-	products, err := productService.GetProducts()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Println(products)
+	app := fiber.New()
+
+	app.Get("/products", productHandler.GetProducts)
+
+	app.Listen(":8000")
 }
 
 func initDatabase() *gorm.DB {
