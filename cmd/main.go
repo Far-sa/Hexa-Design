@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
-	adapters "hexa-design/adapters/outbound/databse"
+	"hexa-design/internal/adapters/inbound/services"
+	repository "hexa-design/internal/adapters/outbound/databse"
 	"log"
 	"os"
 
+	"github.com/go-redis/redis/v8"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -14,9 +16,14 @@ import (
 func main() {
 
 	db := initDatabase()
-	productRepo := adapters.NewProductRepositoryDb(db)
+	redisClient := initRedis()
+	_ = redisClient
+	productRepo := repository.NewProductRepositoryRedis(db, redisClient)
+	//productRepo := repository.NewProductRepositoryDb(db)
+	//productService := services.NewProductService(productRepo)
+	productService := services.NewProductServiceRedis(productRepo, redisClient)
 
-	products, err := productRepo.GetProducts()
+	products, err := productService.GetProducts()
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -41,4 +48,10 @@ func initDatabase() *gorm.DB {
 		panic(err)
 	}
 	return db
+}
+
+func initRedis() *redis.Client {
+	return redis.NewClient(&redis.Options{
+		Addr: "localhost:6379",
+	})
 }
