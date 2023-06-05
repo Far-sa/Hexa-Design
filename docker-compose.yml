@@ -14,7 +14,7 @@ services:
     image: loadimpact/k6
     container_name: k6
     environment:
-      - K6_OUT=influxdb=http://influxdb:8086/k6
+      - K6_OUT=influxdb=${k6_OUT}
     volumes:
       - ./scripts:/scripts
 
@@ -22,8 +22,8 @@ services:
     image: influxdb:1.8.10
     container_name: influxdb
     environment:
-      - INFLUXDB_DB=k6
-      - INFLUXDB_HTTP_MAX_BODY_SIZE=0
+      - INFLUXDB_DB=${INFLUXDB_DB}
+      - INFLUXDB_HTTP_MAX_BODY_SIZE=${INFLUXDB_BODY_SIZE}
     ports:
       - 8086:8086
     volumes:
@@ -33,8 +33,8 @@ services:
     image: grafana/grafana
     container_name: grafana
     environment:
-      - GF_AUTH_ANONYMOUS_ENABLE=true
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_ANONYMOUS_ENABLE=${GF_AUTH}
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=S{GF_ROLE}
     ports:
       - 3000:3000
     volumes:
@@ -44,8 +44,8 @@ services:
     image: mariadb
     container_name: mariadb
     environment:
-      - MARIADB_ROOT_PASSWORD=password
-      - MARIADB_DATABASE=puppet
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - MARIADB_DATABASE=${MARIADB_DB_NAME}
     ports:
       - 3306:3306
     volumes:

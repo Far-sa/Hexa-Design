@@ -18,10 +18,11 @@ func main() {
 	db := initDatabase()
 	redisClient := initRedis()
 	_ = redisClient
-	productRepo := repository.NewProductRepositoryRedis(db, redisClient)
-	//productRepo := repository.NewProductRepositoryDb(db)
-	//productService := services.NewProductService(productRepo)
-	productService := services.NewProductServiceRedis(productRepo, redisClient)
+
+	//productRepo := repository.NewProductRepositoryRedis(db, redisClient)
+	//productService := services.NewProductServiceRedis(productRepo, redisClient)
+	productRepo := repository.NewProductRepositoryDb(db)
+	productService := services.NewProductService(productRepo)
 
 	products, err := productService.GetProducts()
 	if err != nil {
