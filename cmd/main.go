@@ -21,8 +21,12 @@ func main() {
 	redisClient := initRedis()
 	_ = redisClient
 
+	//? use redis for all layers --> Repository/service/handler
 	//productRepo := repository.NewProductRepositoryRedis(db, redisClient)
 	//productService := services.NewProductServiceRedis(productRepo, redisClient)
+	//productHandler := handler.NewProductHandlerRedis(productService,redisClient)
+	
+	//* use mysql database as basic repo
 	productRepo := repository.NewProductRepositoryDb(db)
 	productService := services.NewProductService(productRepo)
 	productHandler := handler.NewProductHandler(productService)
