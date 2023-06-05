@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"hexa-design/domain/repository"
+	adapters "hexa-design/adapters/outbound/databse"
 	"log"
 	"os"
 
@@ -14,7 +14,7 @@ import (
 func main() {
 
 	db := initDatabase()
-	productRepo := repository.NewProductRepositoryDb(db)
+	productRepo := adapters.NewProductRepositoryDb(db)
 
 	products, err := productRepo.GetProducts()
 	if err != nil {

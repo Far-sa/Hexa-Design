@@ -1,4 +1,5 @@
-package domain
+package repository
+
 
 type Product struct{
 	ID int

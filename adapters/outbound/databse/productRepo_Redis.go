@@ -1,10 +1,11 @@
-package repository
+package adapters
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
-	domain "hexa-design/domain/model"
+	domain "hexa-design/domain/repository"
+	"math/rand"
 	"time"
 
 	"github.com/go-redis/redis/v8"
@@ -22,25 +23,25 @@ func NewProductRepositoryRedis(db *gorm.DB, redisClient *redis.Client) domain.Pr
 	return productRepositoryRedis{db, redisClient}
 }
 
-// func mockData(db *gorm.DB) error {
+func mockData(db *gorm.DB) error {
 
-// 	var count int64
-// 	db.Model(&product{}).Count(&count)
-// 	if count > 0 {
-// 		return nil
-// 	}
+	var count int64
+	db.Model(&domain.Product{}).Count(&count)
+	if count > 0 {
+		return nil
+	}
 
-// 	seed := rand.NewSource(time.Now().Unix())
-// 	random := rand.New(seed)
-// 	products := []product{}
-// 	for i := 0; i < 500; i++ {
-// 		products = append(products, product{
-// 			Name:     "",
-// 			Quantity: random.Intn(100),
-// 		})
-// 	}
-// 	return db.Create(&products).Error
-// }
+	seed := rand.NewSource(time.Now().Unix())
+	random := rand.New(seed)
+	products := []domain.Product{}
+	for i := 0; i < 500; i++ {
+		products = append(products, domain.Product{
+			Name:     "",
+			Quantity: random.Intn(100),
+		})
+	}
+	return db.Create(&products).Error
+}
 
 func (r productRepositoryRedis) GetProducts() (products []domain.Product, err error) {
 
