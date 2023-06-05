@@ -1,7 +1,7 @@
 package repository
 
 import (
-	ports "hexa-design/internal/ports/repository"
+	ports "hexa-design/internal/ports"
 
 	"gorm.io/gorm"
 )

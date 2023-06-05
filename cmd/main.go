@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"hexa-design/internal/adapters/inbound/services"
+	"hexa-design/internal/domain/services"
 	repository "hexa-design/internal/adapters/outbound/databse"
 	"log"
 	"os"

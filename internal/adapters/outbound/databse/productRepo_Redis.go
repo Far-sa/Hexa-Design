@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	ports "hexa-design/internal/ports/repository"
+	ports "hexa-design/internal/ports"
 	"math/rand"
 	"time"
 
