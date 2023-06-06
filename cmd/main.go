@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	handler "hexa-design/internal/adapters/inbound/rest"
-	repository "hexa-design/internal/adapters/outbound/databse"
+	repository "hexa-design/internal/adapters/outbound/database"
 	"hexa-design/internal/domain/services"
 	"log"
 	"os"
@@ -34,7 +34,6 @@ func main() {
 	app := fiber.New()
 
 	app.Get("/products", productHandler.GetProducts)
-
 	app.Listen(":8000")
 }
 
