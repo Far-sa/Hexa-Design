@@ -34,7 +34,7 @@ services:
     container_name: grafana
     environment:
       - GF_AUTH_ANONYMOUS_ENABLE=${GF_AUTH}
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=S{GF_ROLE}
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=${GF_ROLE}
     ports:
       - 3000:3000
     volumes:

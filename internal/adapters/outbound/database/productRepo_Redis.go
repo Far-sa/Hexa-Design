@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"hexa-design/internal/domain/model"
 	ports "hexa-design/internal/ports"
 	"math/rand"
 	"time"
@@ -18,7 +19,7 @@ type productRepositoryRedis struct {
 }
 
 func NewProductRepositoryRedis(db *gorm.DB, redisClient *redis.Client) ports.ProductRepository {
-	db.AutoMigrate(&ports.Product{})
+	db.AutoMigrate(&model.Product{})
 	mockData(db)
 	return productRepositoryRedis{db, redisClient}
 }
@@ -26,16 +27,16 @@ func NewProductRepositoryRedis(db *gorm.DB, redisClient *redis.Client) ports.Pro
 func mockData(db *gorm.DB) error {
 
 	var count int64
-	db.Model(&ports.Product{}).Count(&count)
+	db.Model(&model.Product{}).Count(&count)
 	if count > 0 {
 		return nil
 	}
 
 	seed := rand.NewSource(time.Now().Unix())
 	random := rand.New(seed)
-	products := []ports.Product{}
+	products := []model.Product{}
 	for i := 0; i < 500; i++ {
-		products = append(products, ports.Product{
+		products = append(products, model.Product{
 			Name:     "",
 			Quantity: random.Intn(100),
 		})
@@ -43,7 +44,7 @@ func mockData(db *gorm.DB) error {
 	return db.Create(&products).Error
 }
 
-func (r productRepositoryRedis) GetProducts() (products []ports.Product, err error) {
+func (r productRepositoryRedis) GetProducts() (products []model.Product, err error) {
 
 	key := "repository::GetProducts"
 

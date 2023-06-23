@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"hexa-design/internal/domain/model"
 	ports "hexa-design/internal/ports"
 	"time"
 
@@ -19,7 +20,7 @@ func NewProductServiceRedis(productRepo ports.ProductRepository, redisClient *re
 	return productServiceRedis{productRepo, redisClient}
 }
 
-func (s productServiceRedis) GetProducts() (products []ports.Product, err error) {
+func (s productServiceRedis) GetProducts() (products []model.Product, err error) {
 	key := "service::GetProducts"
 
 	// Redis Get
@@ -39,7 +40,7 @@ func (s productServiceRedis) GetProducts() (products []ports.Product, err error)
 	}
 
 	for _, p := range productDB {
-		products = append(products, ports.Product{
+		products = append(products, model.Product{
 			ID:       p.ID,
 			Name:     p.Name,
 			Quantity: p.Quantity,

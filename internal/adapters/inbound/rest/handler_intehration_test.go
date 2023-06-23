@@ -3,8 +3,8 @@ package handler_test
 import (
 	handler "hexa-design/internal/adapters/inbound/rest"
 	repository "hexa-design/internal/adapters/outbound/database"
+	"hexa-design/internal/domain/model"
 	"hexa-design/internal/domain/services"
-	"hexa-design/internal/ports"
 	"io"
 	"net/http/httptest"
 	"testing"
@@ -17,7 +17,7 @@ func TestGetProducts_integration(t *testing.T) {
 	t.Run("", func(t *testing.T) {
 		expected := ""
 		productRepo := repository.NewProductRepositoryMock()
-		productRepo.On("GetProducts").Return(ports.Product{
+		productRepo.On("GetProducts").Return(model.Product{
 			ID:       271,
 			Name:     "Product271",
 			Quantity: 99,

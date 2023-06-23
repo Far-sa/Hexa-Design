@@ -3,8 +3,8 @@ package services_test
 import (
 	"errors"
 	repository "hexa-design/internal/adapters/outbound/database"
+	"hexa-design/internal/domain/model"
 	"hexa-design/internal/domain/services"
-	"hexa-design/internal/ports"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -27,7 +27,7 @@ func TestGetProducts_service(t *testing.T) {
 		t.Run(c.name, func(t *testing.T) {
 			productRepo := repository.NewProductRepositoryMock()
 
-			expectedProducts := []ports.Product{
+			expectedProducts := []model.Product{
 				{ID: c.id, Name: c.name, Quantity: c.quantity},
 			}
 			productRepo.On("GetProducts").Return(expectedProducts, nil)
@@ -42,7 +42,7 @@ func TestGetProducts_service(t *testing.T) {
 		t.Run("", func(t *testing.T) {
 			//* Arrange
 			productRepo := repository.NewProductRepositoryMock()
-			productRepo.On("GetProducts").Return([]ports.Product{}, errors.New(""))
+			productRepo.On("GetProducts").Return([]model.Product{}, errors.New(""))
 
 			productSvc := services.NewProductService(productRepo)
 			//* Act

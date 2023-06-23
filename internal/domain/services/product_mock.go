@@ -1,20 +1,19 @@
 package services
 
 import (
-	"hexa-design/internal/ports"
-
 	"github.com/stretchr/testify/mock"
+	"hexa-design/internal/domain/model"
 )
 
-
-type productServiceMock struct{
+type productServiceMock struct {
 	mock.Mock
 }
-func NewProductServiceMock()*productServiceMock{
+
+func NewProductServiceMock() *productServiceMock {
 	return &productServiceMock{}
 }
 
-func (m *productServiceMock)GetProducts()([]ports.Product,error){
+func (m *productServiceMock) GetProducts() ([]model.Product, error) {
 	args := m.Called()
-	return args.Get(0).([]ports.Product),args.Error(1)
+	return args.Get(0).([]model.Product), args.Error(1)
 }

@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"hexa-design/internal/ports"
+	"hexa-design/internal/domain/model"
 
 	"github.com/stretchr/testify/mock"
 )
@@ -16,7 +16,7 @@ func NewProductRepositoryMock()*productRepositoryMock{
 	return &productRepositoryMock{}
 }
 
-func (m *productRepositoryMock) GetProducts()([]ports.Product,error){
+func (m *productRepositoryMock) GetProducts()([]model.Product,error){
 	args := m.Called()
-	return args.Get(0).([]ports.Product),args.Error(1)
+	return args.Get(0).([]model.Product),args.Error(1)
 }

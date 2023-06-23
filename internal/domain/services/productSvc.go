@@ -1,6 +1,9 @@
 package services
 
-import ports "hexa-design/internal/ports"
+import (
+	"hexa-design/internal/domain/model"
+	ports "hexa-design/internal/ports"
+)
 
 
 type productService struct{
@@ -13,14 +16,14 @@ return productService{productRepo: productRepo}
 }
 
 
-func (s productService) GetProducts()(products []ports.Product, err error){
+func (s productService) GetProducts()(products []model.Product, err error){
 productDB ,err := s.productRepo.GetProducts()
 if err != nil {
 	return nil,err
 }
 
 for _, p := range productDB{
-	products = append(products, ports.Product{
+	products = append(products, model.Product{
 		ID: p.ID,
 		Name: p.Name,
 		Quantity: p.Quantity,

@@ -1,21 +1,20 @@
 package ports
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"hexa-design/internal/domain/model"
+
+	"github.com/gofiber/fiber/v2"
+)
 
 
-type Product struct{
-	ID int
-	Name string
-	Quantity int
-}
 
 
 type ProductRepository interface{
-	GetProducts()([]Product,error)
+	GetProducts()([]model.Product,error)
 }
 
 type ProductService interface{
-	GetProducts()([]Product,error)
+	GetProducts()([]model.Product,error)
 }
 
 
