@@ -1,30 +1,34 @@
 package repository_test
 
 import (
-	"errors"
 	repository "hexa-design/internal/adapters/outbound/repositories"
+	"hexa-design/internal/domain/model"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetProduct(t *testing.T) {
-	type testCase struct {
-		test        string
-		name        string
-		expectedErr error
+
+	db := setup(t)
+
+	expected := model.Product{
+		ID:       1,
+		Name:     "",
+		Quantity: 99,
 	}
 
-	cases := []testCase{
-		{test: "err not found", name: "", expectedErr: errors.New("")},
-		{test: "success", name: "", expectedErr: nil},
-	}
+	t.Run("product not found", func(t *testing.T) {
+		product := repository.NewProductRepositoryDb(db)
+		_, err := product.GetProducts()
+		assert.Nil(t, err)
 
-	for _, c := range cases {
-		t.Run(c.test, func(t *testing.T) {
-			productRepo := repository.NewProductRepositoryMock()
-			_, err := productRepo.GetProducts()
-			if !errors.Is(err, c.expectedErr) {
-				t.Error("", c.expectedErr, err)
-			}
-		})
-	}
+	})
+	t.Run("success", func(t *testing.T) {
+		productDB := repository.NewProductRepositoryDb(db)
+		product, err := productDB.GetProducts()
+		assert.Nil(t, err)
+		assert.Equal(t, expected, product)
+
+	})
 }
