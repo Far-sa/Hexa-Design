@@ -2,7 +2,7 @@ package services_test
 
 import (
 	"errors"
-	repository "hexa-design/internal/adapters/outbound/database"
+	repository "hexa-design/internal/adapters/outbound/repositories"
 	"hexa-design/internal/domain/model"
 	"hexa-design/internal/domain/services"
 	"testing"
@@ -15,6 +15,7 @@ func TestGetProducts_service(t *testing.T) {
 		id       int
 		name     string
 		quantity int
+		expected model.Product
 	}
 
 	cases := []testCase{
@@ -25,20 +26,31 @@ func TestGetProducts_service(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
+
+			//* Arrange
+			// expectedProducts := []model.Product{
+			// 	{ID: c.id, Name: c.name, Quantity: c.quantity},
+			// }
 			productRepo := repository.NewProductRepositoryMock()
+			productRepo.On("GetProducts").Return(model.Product{
+				ID:       1,
+				Name:     c.name,
+				Quantity: c.quantity,
+			}, nil)
 
-			expectedProducts := []model.Product{
-				{ID: c.id, Name: c.name, Quantity: c.quantity},
-			}
-			productRepo.On("GetProducts").Return(expectedProducts, nil)
 			productSvc := services.NewProductService(productRepo)
-			result, err := productSvc.GetProducts()
 
+			//* Act
+			result, err := productSvc.GetProducts()
+			expected := c.expected
+
+			//* Assert
 			assert.NoError(t, err)
-			assert.Equal(t, expectedProducts, result)
+			assert.Equal(t, expected, result)
 
 			productRepo.AssertCalled(t, "GetProducts")
 		})
+		
 		t.Run("", func(t *testing.T) {
 			//* Arrange
 			productRepo := repository.NewProductRepositoryMock()

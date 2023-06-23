@@ -2,7 +2,7 @@ package repository_test
 
 import (
 	"errors"
-	repository "hexa-design/internal/adapters/outbound/database"
+	repository "hexa-design/internal/adapters/outbound/repositories"
 	"testing"
 )
 

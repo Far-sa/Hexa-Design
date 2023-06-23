@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	handler "hexa-design/internal/adapters/inbound/rest"
-	repository "hexa-design/internal/adapters/outbound/database"
+	repository "hexa-design/internal/adapters/outbound/repositories"
 	"hexa-design/internal/domain/services"
 	"log"
 	"os"
